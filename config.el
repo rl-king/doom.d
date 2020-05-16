@@ -77,7 +77,6 @@
 
 (setq magit-display-buffer-function 'magit-display-buffer-traditional)
 (map! :n "SPC TAB" #'evil-switch-to-windows-last-buffer)
-
-;; (add-load-path! "/Users/king/Private/temp/emacs-pragmatapro-ligatures")
-;; (require 'pragmatapro-lig)
-;;
+(map! :n "SPC s e" #'evil-multiedit-match-all)
+(map! :n "SPC e n" #'flycheck-next-error)
+(map! :n "SPC e N" #'flycheck-previous-error)
