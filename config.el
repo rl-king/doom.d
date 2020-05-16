@@ -51,6 +51,9 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
+
+;; FORMAT
+
 (reformatter-define scss-format
   :program "scss-format"
   :args '("--stdin")
@@ -66,16 +69,36 @@
 (add-hook 'haskell-mode-hook 'ormolu-format-on-save-mode)
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 (setq elm-format-on-save t)
+
+
+;; NAVIGATION
+
+(setq evil-move-cursor-back nil)
 (setq scroll-margin 15)
+(setq-default evil-escape-key-sequence "fd")
+
+
+;; ERLANG
+
 (setq flycheck-erlang-include-path
       '("/Users/king/Driebit/zotonic/include"
         "/Users/king/Driebit/zotonic/deps"
         "/Users/king/Driebit/zotonic"
         "/Users/king/Driebit/ginger/modules"))
-(setq-default evil-escape-key-sequence "fd")
-(setq evil-move-cursor-back nil)
+
+
+;; MAGIT
 
 (setq magit-display-buffer-function 'magit-display-buffer-traditional)
+
+
+;; LSP
+
+(setq lsp-ui-sideline-show-diagnostics nil)
+
+
+;; KEYS
+
 (map! :n "SPC TAB" #'evil-switch-to-windows-last-buffer)
 (map! :n "SPC s e" #'evil-multiedit-match-all)
 (map! :n "SPC e n" #'flycheck-next-error)
