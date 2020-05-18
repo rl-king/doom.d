@@ -103,3 +103,16 @@
 (map! :n "SPC s e" #'evil-multiedit-match-all)
 (map! :n "SPC e n" #'flycheck-next-error)
 (map! :n "SPC e N" #'flycheck-previous-error)
+
+
+;; GOLDEN RATIO MODE
+;; https://github.com/hlissner/doom-emacs/issues/2225
+;;
+(use-package! golden-ratio
+  :after-call pre-command-hook
+  :config
+  (golden-ratio-mode +1)
+  ;; Using this hook for resizing windows is less precise than
+  ;; `doom-switch-window-hook'.
+  (remove-hook 'window-configuration-change-hook #'golden-ratio)
+  (add-hook 'doom-switch-window-hook #'golden-ratio))

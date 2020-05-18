@@ -18,6 +18,7 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! reformatter)
 (package! almost-mono-themes)
+(package! golden-ratio)
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
