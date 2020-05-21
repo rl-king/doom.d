@@ -32,7 +32,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type nil)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -76,6 +76,17 @@
 (setq evil-move-cursor-back nil)
 (setq scroll-margin 15)
 (setq-default evil-escape-key-sequence "fd")
+(add-hook 'prog-mode-hook #'turn-off-smartparens-mode)
+
+
+;; HASKELL
+
+(setq haskell-process-path-stack "/usr/local/bin/stack")
+(defun haskell-mode-setup ()
+  (setq haskell-process-log t)
+  (setq haskell-process-type 'stack-ghci))
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'haskell-mode-setup)
 
 
 ;; ERLANG
@@ -101,18 +112,23 @@
 
 (map! :n "SPC TAB" #'evil-switch-to-windows-last-buffer)
 (map! :n "SPC s e" #'evil-multiedit-match-all)
+(map! :v "SPC s e" #'evil-multiedit-match-all)
 (map! :n "SPC e n" #'flycheck-next-error)
 (map! :n "SPC e N" #'flycheck-previous-error)
 
 
-;; GOLDEN RATIO MODE
-;; https://github.com/hlissner/doom-emacs/issues/2225
-;;
-(use-package! golden-ratio
-  :after-call pre-command-hook
-  :config
-  (golden-ratio-mode +1)
-  ;; Using this hook for resizing windows is less precise than
-  ;; `doom-switch-window-hook'.
-  (remove-hook 'window-configuration-change-hook #'golden-ratio)
-  (add-hook 'doom-switch-window-hook #'golden-ratio))
+;; MISC
+(setq confirm-kill-emacs nil)
+
+
+;; ;; GOLDEN RATIO MODE
+;; ;; https://github.com/hlissner/doom-emacs/issues/2225
+;; ;;
+;; (use-package! golden-ratio
+;;   :after-call pre-command-hook
+;;   :config
+;;   (golden-ratio-mode +1)
+;;   ;; Using this hook for resizing windows is less precise than
+;;   ;; `doom-switch-window-hook'.
+;;   (remove-hook 'window-configuration-change-hook #'golden-ratio)
+;;   (add-hook 'doom-switch-window-hook #'golden-ratio))
