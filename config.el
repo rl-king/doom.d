@@ -24,7 +24,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-moonlight)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -65,6 +65,7 @@
   :group 'ormolu
   :lighter " ORM")
 
+(add-hook 'css-mode-hook 'scss-format-on-save-mode)
 (add-hook 'scss-mode-hook 'scss-format-on-save-mode)
 (add-hook 'haskell-mode-hook 'ormolu-format-on-save-mode)
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
@@ -75,18 +76,21 @@
 
 (setq evil-move-cursor-back nil)
 (setq scroll-margin 15)
+(setq-default left-fringe-width 18)
+(setq-default right-fringe-width 18)
 (setq-default evil-escape-key-sequence "fd")
 (add-hook 'prog-mode-hook #'turn-off-smartparens-mode)
 
 
 ;; HASKELL
 
-(setq haskell-process-path-stack "/usr/local/bin/stack")
-(defun haskell-mode-setup ()
-  (setq haskell-process-log t)
-  (setq haskell-process-type 'stack-ghci))
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-(add-hook 'haskell-mode-hook 'haskell-mode-setup)
+(add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
+;; (setq haskell-process-path-stack "/usr/local/bin/stack")
+;; (defun haskell-mode-setup ()
+;;   (setq haskell-process-log t)
+;;   (setq haskell-process-type 'stack-ghci))
+;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;; (add-hook 'haskell-mode-hook 'haskell-mode-setup)
 
 
 ;; ERLANG
@@ -105,7 +109,7 @@
 
 ;; LSP
 
-(setq lsp-ui-sideline-show-diagnostics nil)
+;; (setq lsp-ui-sideline-show-diagnostics nil)
 
 
 ;; KEYS
