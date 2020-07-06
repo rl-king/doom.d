@@ -19,12 +19,12 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "PragmataPro Mono Liga" :size 15))
+(setq doom-font (font-spec :family "PragmataPro Mono Liga" :size 17))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-moonlight)
+(setq doom-theme 'leuven)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -119,7 +119,8 @@
 (map! :v "SPC s e" #'evil-multiedit-match-all)
 (map! :n "SPC e n" #'flycheck-next-error)
 (map! :n "SPC e N" #'flycheck-previous-error)
-
+(map! :n "SPC c l" #'comment-line)
+(map! :v "SPC c l" #'comment-line)
 
 ;; MISC
 (setq confirm-kill-emacs nil)
