@@ -17,8 +17,7 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! reformatter)
-(package! almost-mono-themes)
-(package! golden-ratio)
+(package! forge)
 (package! flycheck-haskell)
 
 ;; To install a package directly from a particular repo, you'll need to specify

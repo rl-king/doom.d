@@ -81,6 +81,7 @@
 (setq-default evil-escape-key-sequence "fd")
 (add-hook 'prog-mode-hook #'turn-off-smartparens-mode)
 
+(setq-default  extra-rg-args "--vimgrep --smart-case")
 
 ;; HASKELL
 
