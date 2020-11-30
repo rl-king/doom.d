@@ -51,6 +51,14 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
+;; LIGATURES
+
+(add-load-path! "~/Private/temp/emacs-pragmatapro-ligatures")
+(require 'pragmatapro-lig)
+
+(add-hook 'haskell-mode-hook 'pragmatapro-lig-mode)
+(add-hook 'elm-mode-hook 'pragmatapro-lig-mode)
+
 
 ;; FORMAT
 
