@@ -24,7 +24,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'leuven)
+(setq doom-theme 'doom-moonlight)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -51,15 +51,6 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-;; LIGATURES
-
-(add-load-path! "~/Private/temp/emacs-pragmatapro-ligatures")
-(require 'pragmatapro-lig)
-
-(add-hook 'haskell-mode-hook 'pragmatapro-lig-mode)
-(add-hook 'elm-mode-hook 'pragmatapro-lig-mode)
-
-
 ;; FORMAT
 
 (reformatter-define scss-format
@@ -69,7 +60,7 @@
 
 (reformatter-define ormolu-format
   :program "ormolu"
-  :args '("--ghc-opt" "-XTypeApplications" "/dev/stdin")
+  :args '("--ghc-opt" "-XTypeApplications")
   :group 'ormolu
   :lighter " ORM")
 
@@ -83,17 +74,23 @@
 ;; NAVIGATION
 
 (setq evil-move-cursor-back nil)
-(setq scroll-margin 15)
+(setq scroll-margin 10)
 (setq-default left-fringe-width 18)
 (setq-default right-fringe-width 18)
 (setq-default evil-escape-key-sequence "fd")
 (add-hook 'prog-mode-hook #'turn-off-smartparens-mode)
+(setq-default extra-rg-args "--vimgrep --smart-case")
 
-(setq-default  extra-rg-args "--vimgrep --smart-case")
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+(add-to-list 'default-frame-alist '(height . 73))
+(add-to-list 'default-frame-alist '(width . 140))
 
 ;; HASKELL
 
+(setq lsp-haskell-server-path "/Users/rlk/.local/bin/haskell-language-server")
 (add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
+
 ;; (setq haskell-process-path-stack "/usr/local/bin/stack")
 ;; (defun haskell-mode-setup ()
 ;;   (setq haskell-process-log t)
@@ -102,24 +99,22 @@
 ;; (add-hook 'haskell-mode-hook 'haskell-mode-setup)
 
 
-;; ERLANG
-
-(setq flycheck-erlang-include-path
-      '("/Users/king/Driebit/zotonic/include"
-        "/Users/king/Driebit/zotonic/deps"
-        "/Users/king/Driebit/zotonic"
-        "/Users/king/Driebit/ginger/modules"))
-
-
 ;; MAGIT
 
 (setq magit-display-buffer-function 'magit-display-buffer-traditional)
 
+(after! magit
+  (transient-append-suffix 'magit-push "-u"
+    '(1 "-s" "Skip verify and CI pipeline" "--no-verify --push-option=ci.skip"))
+)
 
 ;; LSP
 
-;; (setq lsp-ui-sideline-show-diagnostics nil)
-
+(setq lsp-ui-sideline-show-diagnostics nil)
+(setq lsp-ui-doc-delay 1)
+(setq lsp-ui-doc-position 'bottom)
+(setq lsp-ui-doc-max-height 20)
+(setq lsp-ui-doc-max-width 300)
 
 ;; KEYS
 
@@ -127,22 +122,21 @@
 (map! :n "SPC s e" #'evil-multiedit-match-all)
 (map! :v "SPC s e" #'evil-multiedit-match-all)
 (map! :n "SPC e n" #'flycheck-next-error)
+(map! :n "SPC s u" #'counsel-yank-pop)
 (map! :n "SPC e N" #'flycheck-previous-error)
 (map! :n "SPC c l" #'comment-line)
 (map! :v "SPC c l" #'comment-line)
+(map! :n "SPC g h" #'hoogle)
 
 ;; MISC
+
 (setq confirm-kill-emacs nil)
 
+(defun my/apply-theme (appearance)
+  "Load theme, taking current system APPEARANCE into consideration."
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (load-theme 'leuven t))
+    ('dark (load-theme 'doom-moonlight t))))
 
-;; ;; GOLDEN RATIO MODE
-;; ;; https://github.com/hlissner/doom-emacs/issues/2225
-;; ;;
-;; (use-package! golden-ratio
-;;   :after-call pre-command-hook
-;;   :config
-;;   (golden-ratio-mode +1)
-;;   ;; Using this hook for resizing windows is less precise than
-;;   ;; `doom-switch-window-hook'.
-;;   (remove-hook 'window-configuration-change-hook #'golden-ratio)
-;;   (add-hook 'doom-switch-window-hook #'golden-ratio))
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)

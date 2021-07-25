@@ -17,9 +17,12 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! reformatter)
-(package! forge)
+(package! dhall-mode)
 (package! flycheck-haskell)
 (package! restclient)
+(package! shakespeare-mode)
+(package! hcl-mode)
+(package! poet-theme)
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
