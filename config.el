@@ -88,6 +88,12 @@
 
 ;; HASKELL
 
+(after! haskell-mode
+  (set-company-backend! 'haskell-mode '(company-ghci company-etags)))
+
+(after! elm-mode
+  (set-company-backend! 'elm-mode '(company-etags company-dabbrev)))
+
 (setq lsp-haskell-server-path "/Users/rlk/.local/bin/haskell-language-server")
 (add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
 
@@ -105,7 +111,7 @@
 
 (after! magit
   (transient-append-suffix 'magit-push "-u"
-    '(1 "-s" "Skip verify and CI pipeline" "--no-verify --push-option=ci.skip"))
+    '(1 "-s" "Skip CI pipeline" "--push-option=ci.skip"))
 )
 
 ;; LSP

@@ -19,7 +19,7 @@
        ;;japanese
 
        :completion
-       company            ; the ultimate code completion backend
+       (company +tng)           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        (ivy +childframe +prescient)               ; a search engine for love and life
@@ -38,7 +38,8 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       (pretty-code +pragmata-pro)       ; ligatures or substitute text with pretty symbols
+       ;; (pretty-code +pragmata-pro)       ; ligatures or substitute text with pretty symbols
+       ligatures
        ;;tabs              ; an tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
