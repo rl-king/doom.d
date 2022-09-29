@@ -18,11 +18,8 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! reformatter)
 (package! dhall-mode)
-(package! flycheck-haskell)
+;; (package! flycheck-haskell)
 (package! restclient)
-(package! shakespeare-mode)
-(package! hcl-mode)
-(package! poet-theme)
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
@@ -51,3 +48,10 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
+
+(package! gitconfig-mode
+	  :recipe (:host github :repo "magit/git-modes"
+			 :files ("gitconfig-mode.el")))
+(package! gitignore-mode
+	  :recipe (:host github :repo "magit/git-modes"
+			 :files ("gitignore-mode.el")))

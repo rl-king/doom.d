@@ -50,7 +50,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
-
 ;; FORMAT
 
 (reformatter-define scss-format
@@ -60,42 +59,57 @@
 
 (reformatter-define ormolu-format
   :program "ormolu"
-  :args '("--ghc-opt" "-XTypeApplications")
+  :args `("-o" "-XOverloadedRecordDot" "-o" "-XTypeApplications" "--stdin-input-file" ,buffer-file-name)
   :group 'ormolu
   :lighter " ORM")
 
-(add-hook 'css-mode-hook 'scss-format-on-save-mode)
-(add-hook 'scss-mode-hook 'scss-format-on-save-mode)
-(add-hook 'haskell-mode-hook 'ormolu-format-on-save-mode)
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
+(reformatter-define fourmolu-format
+  :program "fourmolu"
+  :args `("-o" "-XOverloadedRecordDot" "-o" "-XTypeApplications" "--stdin-input-file" ,buffer-file-name)
+  :group 'fourmolu
+  :lighter " ORM")
+
+(add-hook! 'css-mode-hook 'scss-format-on-save-mode)
+(add-hook! 'scss-mode-hook 'scss-format-on-save-mode)
+(add-hook! 'haskell-mode-hook 'fourmolu-format-on-save-mode)
+(add-hook! 'before-save-hook #'delete-trailing-whitespace)
 (setq elm-format-on-save t)
 
+(setq flycheck-posframe-border-width 10)
+(setq flycheck-posframe-position 'window-bottom-right-corner)
+
+;; (defun haskellformat ()
+;;   (if (string-match-p "itoh" (buffer-file-name))
+;;       'fourmolu-format-on-save-mode
+;;     'ormolu-format-on-save-mode))
+
+;; (add-hook! 'haskell-mode-hook (haskellformat))
 
 ;; NAVIGATION
 
 (setq evil-move-cursor-back nil)
-(setq scroll-margin 10)
+(setq scroll-margin 5)
 (setq-default left-fringe-width 18)
 (setq-default right-fringe-width 18)
 (setq-default evil-escape-key-sequence "fd")
-(add-hook 'prog-mode-hook #'turn-off-smartparens-mode)
+(add-hook! 'prog-mode-hook #'turn-off-smartparens-mode)
 (setq-default extra-rg-args "--vimgrep --smart-case")
 
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+;; (add-hook! 'prog-mode-hook #'display-fill-column-indicator-mode)
 
-(add-to-list 'default-frame-alist '(height . 73))
-(add-to-list 'default-frame-alist '(width . 140))
+;; (add-to-list 'default-frame-alist '(height . 73))
+;; (add-to-list 'default-frame-alist '(width . 140))
 
 ;; HASKELL
 
-(after! haskell-mode
-  (set-company-backend! 'haskell-mode '(company-ghci company-etags)))
+;; (after! haskell-mode
+;;   (set-company-backend! 'haskell-mode '(company-ghci company-etags)))
 
-(after! elm-mode
-  (set-company-backend! 'elm-mode '(company-etags company-dabbrev)))
+;; (after! elm-mode
+;;   (set-company-backend! 'elm-mode '(company-etags company-dabbrev)))
 
-(setq lsp-haskell-server-path "/Users/rlk/.local/bin/haskell-language-server")
-(add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
+;; (setq lsp-haskell-server-path "/Users/king/.local/bin/haskell-language-server")
+;; (add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
 
 ;; (setq haskell-process-path-stack "/usr/local/bin/stack")
 ;; (defun haskell-mode-setup ()
@@ -116,23 +130,17 @@
 
 ;; LSP
 
+(setq-default flycheck-disabled-checkers '(haskell-ghc, haskell-hlint))
+
+;; (setq lsp-auto-configure nil)
+;; (setq lsp-modeline-workspace-status-enable nil)
+;; (setq lsp-modeline-diagnostics-enable nil)
 (setq lsp-ui-sideline-show-diagnostics nil)
 (setq lsp-ui-doc-delay 1)
 (setq lsp-ui-doc-position 'bottom)
 (setq lsp-ui-doc-max-height 20)
 (setq lsp-ui-doc-max-width 300)
-
-;; KEYS
-
-(map! :n "SPC TAB" #'evil-switch-to-windows-last-buffer)
-(map! :n "SPC s e" #'evil-multiedit-match-all)
-(map! :v "SPC s e" #'evil-multiedit-match-all)
-(map! :n "SPC e n" #'flycheck-next-error)
-(map! :n "SPC s u" #'counsel-yank-pop)
-(map! :n "SPC e N" #'flycheck-previous-error)
-(map! :n "SPC c l" #'comment-line)
-(map! :v "SPC c l" #'comment-line)
-(map! :n "SPC g h" #'hoogle)
+(setq lsp-lens-enable nil)
 
 ;; MISC
 
@@ -146,3 +154,16 @@
     ('dark (load-theme 'doom-moonlight t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+
+;; KEYS
+
+(map! :n "SPC TAB" #'evil-switch-to-windows-last-buffer)
+(map! :leader :desc "Multi edit" :n "s e" #'evil-multiedit-match-all)
+(map! :leader :desc "Multi cursor" :n "s w" #'evil-mc-make-cursor-in-visual-selection-beg)
+(map! :n "SPC e n" #'flycheck-next-error)
+;; (map! :n "SPC s u" #'counsel-yank-pop)
+(map! :n "SPC e N" #'flycheck-previous-error)
+(map! :n "SPC c l" #'comment-line)
+(map! :v "SPC c l" #'comment-line)
+(map! :n "SPC g h" #'hoogle)
+;; (map! :n "C >" #'mc/mark-next-like-this)
