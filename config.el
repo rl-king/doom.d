@@ -76,6 +76,7 @@
 (setq elm-format-on-save t)
 
 (setq flycheck-posframe-border-width 10)
+(setq flycheck-navigation-minimum-level 'error)
 (setq flycheck-posframe-position 'window-bottom-right-corner)
 
 ;; (defun haskellformat ()
