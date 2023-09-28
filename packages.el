@@ -17,9 +17,15 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! reformatter)
-(package! dhall-mode)
+;; (package! dhall-mode)
 ;; (package! flycheck-haskell)
-(package! restclient)
+;; (package! restclient)
+;; (package! zoom)
+;; (package! mermaid-mode)
+(package! string-inflection)
+(package! flymake-easy)
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:

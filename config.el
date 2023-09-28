@@ -19,12 +19,15 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "PragmataPro Mono Liga" :size 17))
+(setq doom-font (font-spec :family "PragmataPro Mono Liga" :size 17)
+      doom-variable-pitch-font (font-spec :family "PragmataPro Mono Liga")
+      doom-unicode-font (font-spec :family "PragmataPro Mono Liga")
+      doom-big-font (font-spec :family "PragmataPro Mono Liga" :size 22))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-moonlight)
+(setq doom-theme 'doom-tokyo-night)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -69,15 +72,31 @@
   :group 'fourmolu
   :lighter " ORM")
 
+(reformatter-define prettier-format
+  :program "prettier"
+  :args `("-w" "--stdin-filepath" ,buffer-file-name)
+  :group 'prettier
+  :lighter " PRTTR")
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("S-TAB" . 'copilot-accept-completion-by-word)
+         ("S-<tab>" . 'copilot-accept-completion-by-word)
+         :map copilot-completion-map
+         ("<tab>" . 'copilot-accept-completion)
+         ("TAB" . 'copilot-accept-completion)))
+
 (add-hook! 'css-mode-hook 'scss-format-on-save-mode)
 (add-hook! 'scss-mode-hook 'scss-format-on-save-mode)
 (add-hook! 'haskell-mode-hook 'fourmolu-format-on-save-mode)
+(add-hook! 'js-mode-hook 'prettier-format-on-save-mode)
+
 (add-hook! 'before-save-hook #'delete-trailing-whitespace)
+
 (setq elm-format-on-save t)
 
-(setq flycheck-posframe-border-width 10)
 (setq flycheck-navigation-minimum-level 'error)
-(setq flycheck-posframe-position 'window-bottom-right-corner)
 
 ;; (defun haskellformat ()
 ;;   (if (string-match-p "itoh" (buffer-file-name))
@@ -143,6 +162,7 @@
 (setq lsp-ui-doc-max-width 300)
 (setq lsp-lens-enable nil)
 
+
 ;; MISC
 
 (setq confirm-kill-emacs nil)
@@ -152,9 +172,15 @@
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (load-theme 'leuven t))
-    ('dark (load-theme 'doom-moonlight t))))
+    ('dark (load-theme 'doom-tokyo-night t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+
+(defun elm-compile-dev-null ()
+  (interactive "F")
+  (elm-compile--file (elm--find-main-file) "/dev/null"))
+
+(setq doom-modeline-height 30)
 
 ;; KEYS
 
@@ -167,4 +193,6 @@
 (map! :n "SPC c l" #'comment-line)
 (map! :v "SPC c l" #'comment-line)
 (map! :n "SPC g h" #'hoogle)
+
+(map! :n "C-c c" #'elm-compile-dev-null)
 ;; (map! :n "C >" #'mc/mark-next-like-this)
