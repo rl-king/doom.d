@@ -24,6 +24,7 @@
 ;; (package! mermaid-mode)
 (package! string-inflection)
 (package! flymake-easy)
+(package! unisonlang-mode)
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 

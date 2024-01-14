@@ -79,13 +79,17 @@
   :lighter " PRTTR")
 
 ;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (("S-TAB" . 'copilot-accept-completion-by-word)
-         ("S-<tab>" . 'copilot-accept-completion-by-word)
-         :map copilot-completion-map
-         ("<tab>" . 'copilot-accept-completion)
-         ("TAB" . 'copilot-accept-completion)))
+;;(use-package! copilot
+;;  :hook (prog-mode . copilot-mode)
+;;  :bind (("S-TAB" . 'copilot-accept-completion-by-word)
+;;         ("S-<tab>" . 'copilot-accept-completion-by-word)
+;;         :map copilot-completion-map
+;;         ("<tab>" . 'copilot-accept-completion)
+;;         ("TAB" . 'copilot-accept-completion)))
+
+
+;; (setq copilot-node-executable "/Users/rubenlieking/.volta/tools/image/node/18.17.0/bin/node")
+;; (setq copilot-max-char 1000000)
 
 (add-hook! 'css-mode-hook 'scss-format-on-save-mode)
 (add-hook! 'scss-mode-hook 'scss-format-on-save-mode)
@@ -153,13 +157,15 @@
 (setq-default flycheck-disabled-checkers '(haskell-ghc, haskell-hlint))
 
 ;; (setq lsp-auto-configure nil)
-;; (setq lsp-modeline-workspace-status-enable nil)
-;; (setq lsp-modeline-diagnostics-enable nil)
+(setq lsp-modeline-workspace-status-enable nil)
+(setq lsp-modeline-diagnostics-enable nil)
 (setq lsp-ui-sideline-show-diagnostics nil)
+(setq lsp-ui-doc-enable t)
 (setq lsp-ui-doc-delay 1)
 (setq lsp-ui-doc-position 'bottom)
 (setq lsp-ui-doc-max-height 20)
 (setq lsp-ui-doc-max-width 300)
+(setq lsp-ui-doc-show-with-cursor t)
 (setq lsp-lens-enable nil)
 
 
