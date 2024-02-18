@@ -79,17 +79,30 @@
   :lighter " PRTTR")
 
 ;; accept completion from copilot and fallback to company
-;;(use-package! copilot
-;;  :hook (prog-mode . copilot-mode)
-;;  :bind (("S-TAB" . 'copilot-accept-completion-by-word)
-;;         ("S-<tab>" . 'copilot-accept-completion-by-word)
-;;         :map copilot-completion-map
-;;         ("<tab>" . 'copilot-accept-completion)
-;;         ("TAB" . 'copilot-accept-completion)))
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("S-TAB" . 'copilot-accept-completion-by-word)
+         ("S-<tab>" . 'copilot-accept-completion-by-word)
+         :map copilot-completion-map
+         ("<tab>" . 'copilot-accept-completion)
+         ("TAB" . 'copilot-accept-completion)))
 
 
-;; (setq copilot-node-executable "/Users/rubenlieking/.volta/tools/image/node/18.17.0/bin/node")
+(setq copilot-node-executable "/Users/rubenlieking/.volta/tools/image/node/18.17.0/bin/node")
 ;; (setq copilot-max-char 1000000)
+
+(after! (evil copilot)
+  ;; Define the custom function that either accepts the completion or does the default behavior
+  (defun my/copilot-tab-or-default ()
+    (interactive)
+    (if (and (bound-and-true-p copilot-mode)
+             ;; Add any other conditions to check for active copilot suggestions if necessary
+             )
+        (copilot-accept-completion)
+      (evil-insert 1))) ; Default action to insert a tab. Adjust as needed.
+
+  ;; Bind the custom function to <tab> in Evil's insert state
+  (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
 
 (add-hook! 'css-mode-hook 'scss-format-on-save-mode)
 (add-hook! 'scss-mode-hook 'scss-format-on-save-mode)
