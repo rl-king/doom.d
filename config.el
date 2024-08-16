@@ -55,6 +55,9 @@
 ;; they are implemented.
 ;; FORMAT
 
+;; (setq shell-file-name (executable-find "bash"))
+(setq shell-file-name "/opt/homebrew/bin/fish")
+
 (reformatter-define scss-format
   :program "scss-format"
   :args '("--stdin")
@@ -79,17 +82,18 @@
   :lighter " PRTTR")
 
 ;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (("S-TAB" . 'copilot-accept-completion-by-word)
-         ("S-<tab>" . 'copilot-accept-completion-by-word)
-         :map copilot-completion-map
-         ("<tab>" . 'copilot-accept-completion)
-         ("TAB" . 'copilot-accept-completion)))
+;; (use-package! copilot
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (("S-TAB" . 'copilot-accept-completion-by-word)
+;;          ("S-<tab>" . 'copilot-accept-completion-by-word)
+;;          :map copilot-completion-map
+;;          ("<tab>" . 'copilot-accept-completion)
+;;          ("TAB" . 'copilot-accept-completion)))
 
 
+(setq copilot-indent-offset-warning-disable t)
 (setq copilot-node-executable "/Users/rubenlieking/.volta/tools/image/node/18.17.0/bin/node")
-;; (setq copilot-max-char 1000000)
+(setq copilot-max-char 1000000)
 
 (after! (evil copilot)
   ;; Define the custom function that either accepts the completion or does the default behavior
@@ -104,10 +108,11 @@
   ;; Bind the custom function to <tab> in Evil's insert state
   (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
 
-(add-hook! 'css-mode-hook 'scss-format-on-save-mode)
-(add-hook! 'scss-mode-hook 'scss-format-on-save-mode)
 (add-hook! 'haskell-mode-hook 'fourmolu-format-on-save-mode)
-(add-hook! 'js-mode-hook 'prettier-format-on-save-mode)
+(add-hook! 'typescript-tsx-mode-hook 'prettier-format-on-save-mode)
+(add-hook! 'typescript-mode-hook 'prettier-format-on-save-mode)
+(add-hook! 'css-mode-hook 'prettier-format-on-save-mode)
+(add-hook! 'scss-mode-hook 'prettier-format-on-save-mode)
 
 (add-hook! 'before-save-hook #'delete-trailing-whitespace)
 
@@ -176,11 +181,12 @@
 (setq lsp-ui-doc-enable t)
 (setq lsp-ui-doc-delay 1)
 (setq lsp-ui-doc-position 'bottom)
-(setq lsp-ui-doc-max-height 20)
-(setq lsp-ui-doc-max-width 300)
+(setq lsp-ui-doc-max-height 40)
+(setq lsp-ui-doc-max-width 500)
 (setq lsp-ui-doc-show-with-cursor t)
-(setq lsp-lens-enable nil)
+(setq lsp-lens-enable t)
 
+(setq web-mode-enable-auto-indentation nil)
 
 ;; MISC
 
