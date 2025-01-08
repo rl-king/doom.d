@@ -108,6 +108,30 @@
   ;; Bind the custom function to <tab> in Evil's insert state
   (evil-define-key 'insert 'global (kbd "<tab>") 'my/copilot-tab-or-default))
 
+
+(use-package gptel
+  :custom
+  (gptel-model 'claude-3-5-sonnet-20241022)
+  :config
+  (defun read-file-contents (file-path)
+    "Read the contents of FILE-PATH and return it as a string."
+    (with-temp-buffer
+      (insert-file-contents file-path)
+      (buffer-string)))
+  (defun gptel-api-key ()
+    (read-file-contents "~/Code/Vendr/claude.txt"))
+  (setq
+   gptel-backend (gptel-make-anthropic "Claude"
+                   :stream t
+                   :key #'gptel-api-key)))
+
+(setq gptel-rewrite-default-action 'accept)
+
+(use-package smerge-mode
+  :ensure nil
+  :hook
+  (prog-mode . smerge-mode))
+
 (add-hook! 'haskell-mode-hook 'fourmolu-format-on-save-mode)
 (add-hook! 'typescript-tsx-mode-hook 'prettier-format-on-save-mode)
 (add-hook! 'typescript-mode-hook 'prettier-format-on-save-mode)
@@ -174,7 +198,7 @@
 
 (setq-default flycheck-disabled-checkers '(haskell-ghc, haskell-hlint))
 
-;; (setq lsp-auto-configure nil)
+;; (setq lsp-auto-configure t)
 (setq lsp-modeline-workspace-status-enable nil)
 (setq lsp-modeline-diagnostics-enable nil)
 (setq lsp-ui-sideline-show-diagnostics nil)
@@ -185,6 +209,9 @@
 (setq lsp-ui-doc-max-width 500)
 (setq lsp-ui-doc-show-with-cursor t)
 (setq lsp-lens-enable t)
+(setq lsp-warn-no-matched-clients nil)
+
+;; (setq lsp-diagnostics-provider :none)
 
 (setq web-mode-enable-auto-indentation nil)
 
@@ -219,5 +246,11 @@
 (map! :v "SPC c l" #'comment-line)
 (map! :n "SPC g h" #'hoogle)
 
+(map! :leader
+      :prefix "l"
+      :nv "g" #'gptel
+      :nv "s" #'gptel-send
+      :nv "r" #'gptel-rewrite
+      :nv "m" #'gptel-menu)
+
 (map! :n "C-c c" #'elm-compile-dev-null)
-;; (map! :n "C >" #'mc/mark-next-like-this)
