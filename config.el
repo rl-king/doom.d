@@ -71,7 +71,7 @@
 
 (reformatter-define fourmolu-format
   :program "fourmolu"
-  :args `("-o" "-XOverloadedRecordDot" "-o" "-XTypeApplications" "--stdin-input-file" ,buffer-file-name)
+  :args `("--stdin-input-file" ,buffer-file-name)
   :group 'fourmolu
   :lighter " ORM")
 
@@ -224,7 +224,7 @@
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
     ('light (load-theme 'leuven t))
-    ('dark (load-theme 'doom-tokyo-night t))))
+    ('dark (load-theme 'doom-Iosvkem t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
